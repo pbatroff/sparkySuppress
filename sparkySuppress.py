@@ -475,7 +475,7 @@ def checkValidSparkPostEndpoint(url):
     else:
         # Just ping the bare endpoint, see if we get a text reply
         res = requests.get(fullurl)
-        if res.status_code != 200 or not ('sparkpost' in res.text) :
+        if res.status_code != 200 :
             print('URL ',fullurl, 'not a valid SparkPost API endpoint')
             exit(1)
     # Otherwise OK
