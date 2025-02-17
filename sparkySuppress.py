@@ -291,16 +291,17 @@ def RetrieveSuppListToFile(outfile, fList, baseUri, apiKey, subAccount, snooze, 
 
         # Get the links from the response.  If there is a 'next' link, we continue processing
         morePages = False
-        for l in res['links']:
-            if l['rel'] == 'next':
-                p['cursor'] = parse_qs(urlparse(l['href']).query)['cursor']
-                suppPage += 1
-                morePages=True
-            elif l['rel'] in ('last', 'first', 'previous'):
-                pass
-            else:
-                print('Unexpected link in response: ', json.dumps(l))
-                exit(1)
+        if 'links' in res:
+            for l in res['links']:
+                if l['rel'] == 'next':
+                    p['cursor'] = parse_qs(urlparse(l['href']).query)['cursor']
+                    suppPage += 1
+                    morePages=True
+                elif l['rel'] in ('last', 'first', 'previous'):
+                    pass
+                else:
+                    print('Unexpected link in response: ', json.dumps(l))
+                    exit(1)
 
 
 def processFile(infile, actionFunction, baseUri, apiKey, typeDefault, descDefault, batchSize, cfgGlobalSubAccount, snooze):
